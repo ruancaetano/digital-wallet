@@ -41,11 +41,33 @@ func TestUpdateClient(t *testing.T) {
 
 func TestUpdateClientWhenArgsAreInvalid(t *testing.T) {
 	client, _ := entity.NewClient("John", "john@email.com")
-
 	assert.NotNil(t, client)
 
 	err := client.Update("", "")
 
 	assert.NotNil(t, err)
 	assert.Error(t, err, "name is required")
+}
+
+func TestAddClientAccount(t *testing.T) {
+	client, _ := entity.NewClient("John", "john@email.com")
+	assert.NotNil(t, client)
+
+	account, _ := entity.NewAccount(client)
+	assert.NotNil(t, account)
+
+	err := client.AddAccount(account)
+	assert.Nil(t, err)
+}
+
+func TestAddInvalidClientAccount(t *testing.T) {
+	client, _ := entity.NewClient("John", "john@email.com")
+	client2, _ := entity.NewClient("John2", "john2@email.com")
+	assert.NotNil(t, client)
+
+	account, _ := entity.NewAccount(client)
+	assert.NotNil(t, account)
+
+	err := client2.AddAccount(account)
+	assert.Error(t, err, "account does not belong to client")
 }
